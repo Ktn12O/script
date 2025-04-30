@@ -79,6 +79,7 @@ local function addMessage(message)
     end
 
     writefile(filename, encoded)
+end
 
 -- Set the OnIncomingMessage callback
 TextChatService.OnIncomingMessage = function(message)
