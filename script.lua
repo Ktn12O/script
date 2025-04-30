@@ -1,3 +1,5 @@
+print("Hello from script.lua!")
+
 local TextChatService = game:GetService("TextChatService")
 local HttpService = game:GetService("HttpService")
 
@@ -28,6 +30,7 @@ TextChatService.OnIncomingMessage = function(message)
     local username = sender and sender.Name or "Unknown"
 
     -- Check if the message contains "just hatched a"
+    print(rawText:lower())
     if rawText:lower():find("just hatched a") then
         -- Split the message into words
         local words = splitString(rawText, " ")
