@@ -30,7 +30,6 @@ TextChatService.OnIncomingMessage = function(message)
     local username = sender and sender.Name or "Unknown"
 
     -- Check if the message contains "just hatched a"
-    print(rawText:lower())
     if rawText:lower():find("just hatched a") then
         -- Split the message into words
         local words = splitString(rawText, " ")
@@ -44,17 +43,19 @@ TextChatService.OnIncomingMessage = function(message)
         -- Determine embed color
         local color
         if pet:lower():find("mythic") then
-            color = 0x800080 -- Purple
+            color = 8388608 -- 0x800080 (purple)
         elseif pet:lower():find("shiny") then
-            color = 0xffff00 -- Yellow
+            color = 16776960 -- 0xffff00 (yellow)
         else
-            color = 0x00ff00 -- Default green
+            color = 65280 -- 0x00ff00 (green)
         end
 
-        -- Create the embed payload
+        -- Create the embed
         local embed = {
             title = "New Pet Found!",
-            description = usernameяться
+            description = username .. " found a **" .. pet .. "**\nOdds: " .. odds,
+            color = color
+        }
 
         -- Send to webhook
         local payload = {
