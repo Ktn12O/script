@@ -22,10 +22,10 @@ end
 
 local function sendData(data)
     local params = {
-        username: HttpService:UrlEncode(data.username),
-        pet: HttpService:UrlEncode(data.pet),
-        odds: HttpService:UrlEncode(data.odds),
-        raw: HttpService:UrlEncode(data.raw)
+        username = HttpService:UrlEncode(data.username),
+        pet = HttpService:UrlEncode(data.pet),
+        odds = HttpService:UrlEncode(data.odds),
+        raw = HttpService:UrlEncode(data.raw)
     }
 
     local url = string.format(
