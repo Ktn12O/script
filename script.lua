@@ -3,16 +3,6 @@ print("Hello from script.lua!")
 local TextChatService = game:GetService("TextChatService")
 local HttpService = game:GetService("HttpService")
 
-local foldername = "Data"
-local filename = foldername .. "//messages.json"
-local data = '{"messages": []}'
-
-if not isfile(filename) then
-    makefolder(foldername)
-    writefile(filename, data)
-    print("Created file " .. filename .. "!")
-end
-
 -- Function to split a string into words
 local function splitString(input, delimiter)
     local words = {}
@@ -28,6 +18,27 @@ local function stripRichText(input)
         return ""
     end
     return input:gsub("<[^>]+>", "")
+end
+
+local function sendData(data)
+    local params = {
+        username: HttpService:UrlEncode(data.username),
+        pet: HttpService:UrlEncode(data.pet),
+        odds: HttpService:UrlEncode(data.odds),
+        raw: HttpService:UrlEncode(data.raw)
+    }
+
+    local url = string.format(
+        "%s?username=%s&pet=%s&odds=%s&raw=%s",
+        "https://syncstride.best/pets",
+        params.username,
+        params.pet,
+        params.odds,
+        params.raw
+    )
+
+    print(url)
+    game:HttpGet(url)
 end
 
 local function addMessage(message)
@@ -51,34 +62,7 @@ local function addMessage(message)
         uuid = uuid
     }
 
-    local fileContent
-    if isfile(filename) then
-        fileContent = readfile(filename)
-    else
-        fileContent = HttpService:JSONEncode({messages = {} })
-    end
-
-    local success, decoded = pcall(function()
-        return HttpService:JSONDecode(fileContent)
-    end)
-
-    if not success then
-        warn("Failed to decode JSON: " .. tostring(decoded))
-        return
-    end
-    
-    table.insert(decoded.messages, messageData)
-
-    local success, encoded = pcall(function()
-        return HttpService:JSONEncode(decoded)
-    end)
-
-    if not success then
-        warn("Failed to encode JSON: " .. tostring(encode))
-        return
-    end
-
-    writefile(filename, encoded)
+    sendData(messageData)
 end
 
 -- Set the OnIncomingMessage callback
