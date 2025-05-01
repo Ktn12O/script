@@ -3,6 +3,8 @@ print("Hello from script.lua!")
 local TextChatService = game:GetService("TextChatService")
 local HttpService = game:GetService("HttpService")
 
+local alertUsers = {"kolton12o", "lthd33"}
+
 -- Function to split a string into words
 local function splitString(input, delimiter)
     local words = {}
@@ -18,6 +20,10 @@ local function stripRichText(input)
         return ""
     end
     return input:gsub("<[^>]+>", "")
+end
+
+local isInArray(str, arr)
+    return table.find(arr, str) ~= nil
 end
 
 local function sendData(data)
@@ -50,6 +56,11 @@ local function addMessage(message)
 
     local words = splitString(rawText, " ")
     local username = words[2]
+
+    if not isInArray(username:lower(), alertUsers) then
+        return
+    end
+
     local odds = words[#words]:gsub("[%(%)]", ""):match("^%s*(.-)%s*$") or "Unknown"
 
     local uuid = HttpService:GenerateGUID(false)
